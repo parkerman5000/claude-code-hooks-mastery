@@ -1,6 +1,7 @@
 .header {
-  background: linear-gradient(135deg, rgba(139,92,246,0.12), rgba(0,180,216,0.08), rgba(255,107,53,0.06));
-  border-bottom: 1px solid rgba(139,92,246,0.2);
+  background: rgba(15,16,24,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   position: relative;
   overflow: hidden;
 }
@@ -11,6 +12,17 @@
   top: 0; left: 0; right: 0;
   height: 3px;
   background: linear-gradient(90deg, #8b5cf6, #00b4d8, #ff6b35, #00f5a0);
+}
+
+/* Gleaming bottom border */
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.6), rgba(0,180,216,0.6), transparent);
+  background-size: 200% 100%;
+  animation: gleam 3s linear infinite;
 }
 
 .topBar {
@@ -34,6 +46,7 @@
   font-size: 14px;
   font-weight: 800;
   letter-spacing: 0.05em;
+  box-shadow: 0 0 16px rgba(139,92,246,0.25);
 }
 
 .titleGroup {
@@ -61,9 +74,10 @@
 .tabs {
   display: flex;
   gap: 4px;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.3);
   border-radius: 8px;
   padding: 3px;
+  border: 1px solid rgba(255,255,255,0.04);
 }
 
 .tab {
@@ -77,18 +91,20 @@
   padding: 6px 16px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
+  position: relative;
 }
 
 .tab:hover {
-  color: #a0a0c0;
+  color: #c0c0d8;
   background: rgba(255,255,255,0.04);
+  transform: translateY(-1px);
 }
 
 .tabActive {
   color: #e2e2f0;
-  background: rgba(0,180,216,0.15);
-  box-shadow: 0 0 12px rgba(0,180,216,0.1);
+  background: rgba(0,180,216,0.12);
+  box-shadow: 0 0 16px rgba(0,180,216,0.15), inset 0 -2px 0 rgba(0,180,216,0.5);
 }
 
 .actions {
@@ -111,7 +127,7 @@
   height: 8px;
   border-radius: 50%;
   background: #00f5a0;
-  box-shadow: 0 0 8px #00f5a0, 0 0 16px rgba(0,245,160,0.3);
+  box-shadow: 0 0 8px #00f5a0, 0 0 20px rgba(0,245,160,0.4);
   animation: liveDot 2s ease-in-out infinite;
 }
 
@@ -133,13 +149,14 @@
   font-family: inherit;
   font-size: 11px;
   font-weight: 600;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
 }
 
 .clearBtn:hover {
   color: #e2e2f0;
-  border-color: rgba(139,92,246,0.3);
+  border-color: rgba(139,92,246,0.4);
   background: rgba(139,92,246,0.08);
+  box-shadow: 0 0 12px rgba(139,92,246,0.15);
 }
 
 .statsRow {
@@ -156,9 +173,16 @@
   gap: 6px;
   padding: 6px 12px;
   background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,0.06);
   border-radius: 8px;
   white-space: nowrap;
+  transition: border-color 0.15s ease;
+}
+
+.statBox:hover {
+  border-color: rgba(139,92,246,0.2);
 }
 
 .statEmoji {
@@ -191,8 +215,10 @@
   padding: 3px 8px;
   border-radius: 4px;
   border: 1px solid;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.3);
   white-space: nowrap;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .pill strong {

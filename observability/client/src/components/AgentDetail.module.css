@@ -1,11 +1,24 @@
 .panel {
   width: 420px;
   min-width: 420px;
-  background: #0e0e1a;
-  border-left: 1px solid rgba(255,255,255,0.06);
+  background: rgba(14,14,26,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+}
+
+/* Gleaming left border */
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(139,92,246,0.5), rgba(0,180,216,0.5), transparent);
+  background-size: 100% 200%;
+  animation: gleam 3s linear infinite;
 }
 
 .placeholder {
@@ -60,7 +73,7 @@
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 4px;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
 }
 
 .closeBtn:hover {
@@ -70,7 +83,18 @@
 
 .meta {
   padding: 12px 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  position: relative;
+}
+
+/* Gleaming section divider */
+.meta::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 14px; right: 14px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.3), rgba(0,180,216,0.3), transparent);
+  background-size: 200% 100%;
+  animation: gleam 4s linear infinite;
 }
 
 .metaRow {
@@ -98,7 +122,15 @@
 
 .promptSection, .contextSection {
   padding: 10px 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  position: relative;
+}
+
+.promptSection::after, .contextSection::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 14px; right: 14px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.2), transparent);
 }
 
 .sectionTitle {
@@ -127,6 +159,7 @@
   border-radius: 6px;
   color: #ef4444;
   font-size: 11px;
+  box-shadow: 0 0 12px rgba(239,68,68,0.08);
 }
 
 .contextBar {
@@ -140,6 +173,7 @@
   height: 100%;
   border-radius: 2px;
   transition: width 0.5s ease;
+  box-shadow: 0 0 8px currentColor;
 }
 
 .logSection {
@@ -166,10 +200,13 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .terminateBtn:hover {
   background: rgba(239,68,68,0.2);
-  border-color: rgba(239,68,68,0.4);
+  border-color: rgba(239,68,68,0.5);
+  box-shadow: 0 0 16px rgba(239,68,68,0.15);
 }

@@ -1,7 +1,20 @@
 .container {
-  background: linear-gradient(135deg, rgba(17,17,34,0.8), rgba(10,10,18,0.9));
-  border-bottom: 1px solid #1e1e3a;
+  background: rgba(17,17,34,0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 10px 20px 6px;
+  position: relative;
+}
+
+/* Gleaming bottom border */
+.container::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.4), rgba(0,180,216,0.4), transparent);
+  background-size: 200% 100%;
+  animation: gleam 3s linear infinite;
 }
 
 .topRow {
@@ -26,6 +39,7 @@
   font-weight: 700;
   color: #8b5cf6;
   letter-spacing: 0.05em;
+  text-shadow: 0 0 12px rgba(139,92,246,0.3);
 }
 
 .statsGroup {
@@ -56,11 +70,13 @@
   font-weight: 700;
   font-family: inherit;
   border-radius: 5px;
-  border: 1px solid #1e1e3a;
-  background: #111122;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(17,17,34,0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   color: #6b6b8d;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
 }
 
 .rangeBtn:hover {
@@ -72,7 +88,7 @@
   background: linear-gradient(135deg, #8b5cf6, #00b4d8);
   color: #0a0a12;
   border-color: transparent;
-  box-shadow: 0 0 10px rgba(139,92,246,0.3);
+  box-shadow: 0 0 12px rgba(139,92,246,0.3);
 }
 
 .chartWrap {
@@ -80,11 +96,11 @@
   width: 100%;
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid rgba(30,30,58,0.5);
+  border: 1px solid rgba(139,92,246,0.08);
 }
 
 .canvas {
   width: 100%;
   display: block;
-  cursor: crosshair;
+  cursor: default;
 }

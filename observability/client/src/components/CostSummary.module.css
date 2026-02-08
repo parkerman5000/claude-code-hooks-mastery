@@ -2,8 +2,21 @@
   display: flex;
   gap: 16px;
   padding: 12px 20px;
-  background: rgba(255,255,255,0.02);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.015);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+}
+
+/* Gleaming bottom line */
+.bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 20px; right: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.3), rgba(0,180,216,0.3), transparent);
+  background-size: 200% 100%;
+  animation: gleam 5s linear infinite;
 }
 
 .stat {
@@ -11,9 +24,16 @@
   align-items: center;
   gap: 8px;
   padding: 6px 14px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(17,17,34,0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,0.06);
   border-radius: 8px;
+  transition: border-color 0.15s ease;
+}
+
+.stat:hover {
+  border-color: rgba(139,92,246,0.2);
 }
 
 .value {
@@ -25,7 +45,7 @@
 
 .active {
   color: #00b4d8;
-  text-shadow: 0 0 10px rgba(0,180,216,0.4);
+  text-shadow: 0 0 12px rgba(0,180,216,0.5);
 }
 
 .label {

@@ -2,20 +2,33 @@
   display: flex;
   gap: 12px;
   padding: 10px 20px;
-  background: #0e0e16;
-  border-bottom: 1px solid #1e1e3a;
+  background: rgba(14,14,22,0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+}
+
+/* Gleaming bottom border */
+.bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 20px; right: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,180,216,0.2), transparent);
 }
 
 .select {
-  background: #111122;
+  background: rgba(17,17,34,0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: #e2e2f0;
-  border: 1px solid #1e1e3a;
+  border: 1px solid rgba(255,255,255,0.08);
   padding: 6px 12px;
   border-radius: 6px;
   font-family: inherit;
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
 }
 
 .select:hover {
@@ -24,6 +37,6 @@
 
 .select:focus {
   outline: none;
-  border-color: #8b5cf6;
-  box-shadow: 0 0 8px rgba(139,92,246,0.15);
+  border-color: rgba(139,92,246,0.5);
+  box-shadow: 0 0 12px rgba(139,92,246,0.12);
 }

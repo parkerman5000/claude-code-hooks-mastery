@@ -6,23 +6,53 @@
 }
 
 .card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+  background: rgba(17,17,34,0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 10px;
   padding: 14px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  animation: fadeUp 0.3s ease-out both;
+}
+
+/* Gleaming border overlay */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 11px;
+  padding: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.3), rgba(0,180,216,0.3), transparent);
+  background-size: 200% 100%;
+  animation: gleam 4s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.card:hover::before {
+  opacity: 1;
 }
 
 .card:hover {
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.14);
-  transform: translateY(-1px);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 20px rgba(139,92,246,0.1);
+  border-color: rgba(255,255,255,0.1);
 }
 
 .selected {
-  border-width: 2px;
-  background: rgba(255,255,255,0.06);
+  border-color: rgba(139,92,246,0.4);
+  box-shadow: 0 0 20px rgba(139,92,246,0.15), 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.selected::before {
+  opacity: 1;
 }
 
 .cardHeader {
@@ -52,7 +82,8 @@
 }
 
 .badgePulse {
-  animation: pulse 2s ease-in-out infinite;
+  animation: pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 8px currentColor;
 }
 
 .model {
@@ -91,6 +122,7 @@
   height: 100%;
   border-radius: 2px;
   transition: width 0.5s ease;
+  box-shadow: 0 0 6px currentColor;
 }
 
 /* Empty state */
@@ -121,5 +153,5 @@
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  50% { opacity: 0.5; }
 }

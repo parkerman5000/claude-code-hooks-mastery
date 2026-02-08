@@ -21,14 +21,17 @@ export function AgentCards({ agents, selectedAgent, onSelectAgent }: AgentCardsP
 
   return (
     <div className={styles.grid}>
-      {agents.map((agent) => {
+      {agents.map((agent, index) => {
         const stateColor = AGENT_STATE_COLORS[agent.state] || "#6b6b8d";
         const isSelected = selectedAgent?.id === agent.id;
         return (
           <div
             key={agent.id}
             className={`${styles.card} ${isSelected ? styles.selected : ""}`}
-            style={{ borderColor: isSelected ? stateColor : undefined }}
+            style={{
+              borderColor: isSelected ? stateColor : undefined,
+              animationDelay: `${index * 0.06}s`,
+            }}
             onClick={() => onSelectAgent(agent)}
           >
             <div className={styles.cardHeader}>
