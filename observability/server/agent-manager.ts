@@ -43,6 +43,16 @@ export class AgentManager {
       };
     }
 
+    // Prevent duplicate active agents with the same name
+    const existingName = req.name || "";
+    if (existingName) {
+      for (const existing of this.agents.values()) {
+        if (existing.name === existingName && (existing.state === "idle" || existing.state === "working")) {
+          return { error: `Agent "${existingName}" is already active (state: ${existing.state})` };
+        }
+      }
+    }
+
     const id = shortId();
     const agent: Agent = {
       id,
