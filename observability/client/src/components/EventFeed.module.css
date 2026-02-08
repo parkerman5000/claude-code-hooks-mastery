@@ -1,0 +1,41 @@
+.feed {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: #0a0a12;
+}
+
+.feed::-webkit-scrollbar {
+  width: 6px;
+}
+
+.feed::-webkit-scrollbar-track {
+  background: #0a0a12;
+}
+
+.feed::-webkit-scrollbar-thumb {
+  background: #1e1e3a;
+  border-radius: 3px;
+}
+
+.feed::-webkit-scrollbar-thumb:hover {
+  background: #2a2a4a;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #3a3a5a;
+  font-size: 14px;
+  gap: 8px;
+}
+
+.emptyEmoji {
+  font-size: 28px;
+  animation: liveDot 2s ease-in-out infinite;
+}
