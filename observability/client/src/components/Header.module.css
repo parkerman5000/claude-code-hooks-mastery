@@ -57,6 +57,40 @@
   font-weight: 500;
 }
 
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.tab {
+  background: transparent;
+  border: none;
+  color: #6b6b8d;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  color: #a0a0c0;
+  background: rgba(255,255,255,0.04);
+}
+
+.tabActive {
+  color: #e2e2f0;
+  background: rgba(0,180,216,0.15);
+  box-shadow: 0 0 12px rgba(0,180,216,0.1);
+}
+
 .actions {
   display: flex;
   align-items: center;
@@ -163,4 +197,14 @@
 
 .pill strong {
   margin-left: 4px;
+}
+
+@keyframes liveDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
