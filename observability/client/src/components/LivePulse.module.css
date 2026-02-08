@@ -1,0 +1,90 @@
+.container {
+  background: linear-gradient(135deg, rgba(17,17,34,0.8), rgba(10,10,18,0.9));
+  border-bottom: 1px solid #1e1e3a;
+  padding: 10px 20px 6px;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.labelIcon {
+  font-size: 16px;
+}
+
+.labelText {
+  font-size: 12px;
+  font-weight: 700;
+  color: #8b5cf6;
+  letter-spacing: 0.05em;
+}
+
+.statsGroup {
+  display: flex;
+  gap: 14px;
+  margin-left: 8px;
+}
+
+.stat {
+  font-size: 11px;
+  color: #6b6b8d;
+}
+
+.stat strong {
+  color: #e2e2f0;
+  margin: 0 2px;
+}
+
+.ranges {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.rangeBtn {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: inherit;
+  border-radius: 5px;
+  border: 1px solid #1e1e3a;
+  background: #111122;
+  color: #6b6b8d;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.rangeBtn:hover {
+  border-color: rgba(139,92,246,0.3);
+  color: #e2e2f0;
+}
+
+.rangeBtnActive {
+  background: linear-gradient(135deg, #8b5cf6, #00b4d8);
+  color: #0a0a12;
+  border-color: transparent;
+  box-shadow: 0 0 10px rgba(139,92,246,0.3);
+}
+
+.chartWrap {
+  position: relative;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(30,30,58,0.5);
+}
+
+.canvas {
+  width: 100%;
+  display: block;
+  cursor: crosshair;
+}

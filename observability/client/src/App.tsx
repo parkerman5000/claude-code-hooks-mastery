@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useWebSocket } from "./hooks/useWebSocket";
 import type { HookEvent } from "./types";
 import { Header } from "./components/Header";
+import { LivePulse } from "./components/LivePulse";
 import { FilterBar } from "./components/FilterBar";
 import { EventFeed } from "./components/EventFeed";
 import { EventDetail } from "./components/EventDetail";
@@ -54,6 +55,7 @@ export function App() {
         events={events}
         onClear={handleClear}
       />
+      <LivePulse events={events} />
       <FilterBar
         events={events}
         filterType={filterType}
