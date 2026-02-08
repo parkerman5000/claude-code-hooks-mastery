@@ -1,0 +1,37 @@
+.bar {
+  display: flex;
+  gap: 16px;
+  padding: 12px 20px;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+}
+
+.value {
+  font-size: 18px;
+  font-weight: 800;
+  color: #e2e2f0;
+  font-variant-numeric: tabular-nums;
+}
+
+.active {
+  color: #00b4d8;
+  text-shadow: 0 0 10px rgba(0,180,216,0.4);
+}
+
+.label {
+  font-size: 10px;
+  color: #6b6b8d;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

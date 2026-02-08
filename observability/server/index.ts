@@ -1,16 +1,6 @@
 import type { Server, ServerWebSocket } from "bun";
-
-interface HookEvent {
-  id: number;
-  source_app: string;
-  session_id: string;
-  hook_event_type: string;
-  payload: Record<string, unknown>;
-  timestamp?: number;
-  chat?: unknown[];
-  summary?: string;
-  received_at: number;
-}
+import { AgentManager } from "./agent-manager";
+import type { HookEvent } from "./types";
 
 const MAX_EVENTS = 500;
 const events: HookEvent[] = [];
@@ -18,8 +8,8 @@ let nextId = 1;
 const wsClients = new Set<ServerWebSocket<unknown>>();
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "http://localhost:5173",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
@@ -29,8 +19,15 @@ function broadcast(message: string) {
   }
 }
 
+const agentManager = new AgentManager(broadcast);
+
+function jsonResponse(data: any, status = 200): Response {
+  return Response.json(data, { status, headers: corsHeaders });
+}
+
 const server = Bun.serve({
   port: 4000,
+  hostname: "0.0.0.0",
 
   fetch(req: Request, server: Server) {
     const url = new URL(req.url);
@@ -39,11 +36,14 @@ const server = Bun.serve({
       return new Response(null, { status: 204, headers: corsHeaders });
     }
 
+    // WebSocket upgrade
     if (url.pathname === "/ws") {
       const upgraded = server.upgrade(req);
       if (upgraded) return undefined;
       return new Response("WebSocket upgrade failed", { status: 400 });
     }
+
+    // --- Hook Event endpoints ---
 
     if (url.pathname === "/events" && req.method === "POST") {
       return handlePostEvent(req);
@@ -52,16 +52,58 @@ const server = Bun.serve({
     if (url.pathname === "/events" && req.method === "GET") {
       const limit = parseInt(url.searchParams.get("limit") || "0");
       const data = limit > 0 ? events.slice(-limit) : events;
-      return Response.json(data, { headers: corsHeaders });
+      return jsonResponse(data);
     }
 
-    return new Response("Claude Code Observability Server", { headers: corsHeaders });
+    // --- Agent endpoints ---
+
+    if (url.pathname === "/agents" && req.method === "POST") {
+      return handleCreateAgent(req);
+    }
+
+    if (url.pathname === "/agents" && req.method === "GET") {
+      return jsonResponse(agentManager.getAllAgents());
+    }
+
+    if (url.pathname === "/agents" && req.method === "DELETE") {
+      return jsonResponse(agentManager.terminateAll());
+    }
+
+    // /agents/:id routes
+    const agentMatch = url.pathname.match(/^\/agents\/([^/]+)$/);
+    if (agentMatch) {
+      const id = agentMatch[1];
+
+      if (req.method === "GET") {
+        const agent = agentManager.getAgent(id);
+        if (!agent) return jsonResponse({ error: "Agent not found" }, 404);
+        return jsonResponse(agent);
+      }
+
+      if (req.method === "DELETE") {
+        const result = agentManager.terminateAgent(id);
+        if (!result.success) return jsonResponse({ error: result.error }, 404);
+        return jsonResponse({ success: true });
+      }
+    }
+
+    // /agents/:id/command
+    const commandMatch = url.pathname.match(/^\/agents\/([^/]+)\/command$/);
+    if (commandMatch && req.method === "POST") {
+      return handleAgentCommand(req, commandMatch[1]);
+    }
+
+    return new Response("Butch Orchestrator Server", { headers: corsHeaders });
   },
 
   websocket: {
     open(ws: ServerWebSocket<unknown>) {
       wsClients.add(ws);
       ws.send(JSON.stringify({ type: "initial", data: events }));
+      // Send current agent state to new connections
+      for (const agent of agentManager.getAllAgents()) {
+        ws.send(JSON.stringify({ type: "agent:created", agent, timestamp: agent.createdAt }));
+      }
     },
     close(ws: ServerWebSocket<unknown>) {
       wsClients.delete(ws);
@@ -78,9 +120,9 @@ async function handlePostEvent(req: Request): Promise<Response> {
     const body = await req.json();
 
     if (!body.source_app || !body.session_id || !body.hook_event_type || !body.payload) {
-      return Response.json(
+      return jsonResponse(
         { error: "Missing required fields: source_app, session_id, hook_event_type, payload" },
-        { status: 400, headers: corsHeaders }
+        400
       );
     }
 
@@ -103,10 +145,43 @@ async function handlePostEvent(req: Request): Promise<Response> {
 
     broadcast(JSON.stringify({ type: "event", data: event }));
 
-    return Response.json(event, { status: 201, headers: corsHeaders });
+    return jsonResponse(event, 201);
   } catch {
-    return Response.json({ error: "Invalid JSON" }, { status: 400, headers: corsHeaders });
+    return jsonResponse({ error: "Invalid JSON" }, 400);
   }
 }
 
-console.log(`Observability server running on http://localhost:${server.port}`);
+async function handleCreateAgent(req: Request): Promise<Response> {
+  try {
+    const body = await req.json();
+
+    if (!body.prompt) {
+      return jsonResponse({ error: "Missing required field: prompt" }, 400);
+    }
+
+    const result = agentManager.createAgent({
+      name: body.name || `agent-${Date.now()}`,
+      prompt: body.prompt,
+      model: body.model,
+      allowedTools: body.allowedTools,
+      systemPrompt: body.systemPrompt,
+    });
+
+    if (result.error) {
+      return jsonResponse({ error: result.error }, 503);
+    }
+
+    return jsonResponse(result.agent, 201);
+  } catch {
+    return jsonResponse({ error: "Invalid JSON" }, 400);
+  }
+}
+
+async function handleAgentCommand(_req: Request, id: string): Promise<Response> {
+  const agent = agentManager.getAgent(id);
+  if (!agent) return jsonResponse({ error: "Agent not found" }, 404);
+  // Command sending will be implemented when SDK interaction model is clearer
+  return jsonResponse({ error: "Agent commands not yet implemented" }, 501);
+}
+
+console.log(`Butch Orchestrator Server running on http://0.0.0.0:${server.port}`);

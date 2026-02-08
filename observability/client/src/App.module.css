@@ -11,3 +11,21 @@
   flex: 1;
   overflow: hidden;
 }
+
+.agentArea {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.agentArea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.agentArea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.agentArea::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+}

@@ -62,3 +62,59 @@ export const EVENT_TYPE_EMOJIS: Record<string, string> = {
   PreCompact: "📦",
   Setup: "⚙️",
 };
+
+// --- Agent types ---
+
+export type AgentState = "idle" | "working" | "completed" | "failed" | "terminated";
+
+export interface AgentMessage {
+  role: "user" | "assistant" | "tool";
+  content: string;
+  timestamp: string;
+}
+
+export interface AgentCost {
+  input: number;
+  output: number;
+  total: number;
+}
+
+export interface Agent {
+  id: string;
+  name: string;
+  prompt: string;
+  model: string;
+  state: AgentState;
+  allowedTools: string[];
+  systemPrompt?: string;
+  createdAt: string;
+  completedAt?: string;
+  messages: AgentMessage[];
+  toolCalls: number;
+  contextUsage: number;
+  cost: AgentCost;
+  error?: string;
+}
+
+export type AgentEventType =
+  | "agent:created"
+  | "agent:working"
+  | "agent:message"
+  | "agent:tool_call"
+  | "agent:completed"
+  | "agent:failed"
+  | "agent:terminated";
+
+export interface AgentEvent {
+  type: AgentEventType;
+  agent: Agent;
+  timestamp: string;
+}
+
+export const AGENT_STATE_COLORS: Record<AgentState, string> = {
+  idle: "#6b6b8d",
+  working: "#00b4d8",
+  completed: "#22c55e",
+  failed: "#ef4444",
+  terminated: "#ff6b35",
+};
