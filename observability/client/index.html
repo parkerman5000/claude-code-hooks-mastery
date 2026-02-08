@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CC Observability — BUTCH</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        background: #0a0a12;
+        color: #e2e2f0;
+        font-family: 'JetBrains Mono', monospace;
+      }
+      #root { height: 100vh; }
+
+      @keyframes slideIn {
+        from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      @keyframes pulseGlow {
+        0%, 100% { box-shadow: 0 0 8px rgba(139,92,246,0.2); }
+        50% { box-shadow: 0 0 20px rgba(139,92,246,0.4), 0 0 40px rgba(0,180,216,0.15); }
+      }
+      @keyframes borderShimmer {
+        0% { border-color: rgba(139,92,246,0.3); }
+        33% { border-color: rgba(0,180,216,0.4); }
+        66% { border-color: rgba(255,107,53,0.3); }
+        100% { border-color: rgba(139,92,246,0.3); }
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes countUp {
+        from { transform: scale(1.3); opacity: 0.6; }
+        to { transform: scale(1); opacity: 1; }
+      }
+      @keyframes liveDot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.4; transform: scale(0.8); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

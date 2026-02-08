@@ -1,0 +1,29 @@
+.bar {
+  display: flex;
+  gap: 12px;
+  padding: 10px 20px;
+  background: #0e0e16;
+  border-bottom: 1px solid #1e1e3a;
+}
+
+.select {
+  background: #111122;
+  color: #e2e2f0;
+  border: 1px solid #1e1e3a;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.select:hover {
+  border-color: rgba(139,92,246,0.3);
+}
+
+.select:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 8px rgba(139,92,246,0.15);
+}
