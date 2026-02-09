@@ -22,6 +22,7 @@ export interface Agent {
   state: AgentState;
   allowedTools: string[];
   systemPrompt?: string;
+  workingDir?: string;
   createdAt: string;
   completedAt?: string;
   messages: AgentMessage[];
@@ -37,6 +38,7 @@ export interface CreateAgentRequest {
   model?: string;
   allowedTools?: string[];
   systemPrompt?: string;
+  workingDir?: string;
 }
 
 export type AgentEventType =

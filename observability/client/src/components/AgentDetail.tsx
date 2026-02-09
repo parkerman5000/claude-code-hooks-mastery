@@ -44,6 +44,14 @@ export function AgentDetail({ agent, onClose }: AgentDetailProps) {
           <span className={styles.metaLabel}>Model</span>
           <span className={styles.metaValue}>{agent.model}</span>
         </div>
+        {agent.workingDir && (
+          <div className={styles.metaRow}>
+            <span className={styles.metaLabel}>Working Dir</span>
+            <span className={styles.metaValue} title={agent.workingDir}>
+              {agent.workingDir.split("/").pop()}
+            </span>
+          </div>
+        )}
         <div className={styles.metaRow}>
           <span className={styles.metaLabel}>Created</span>
           <span className={styles.metaValue}>

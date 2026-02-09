@@ -165,6 +165,7 @@ async function handleCreateAgent(req: Request): Promise<Response> {
       model: body.model,
       allowedTools: body.allowedTools,
       systemPrompt: body.systemPrompt,
+      workingDir: body.workingDir,
     });
 
     if (result.error) {

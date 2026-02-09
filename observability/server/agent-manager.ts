@@ -1,3 +1,6 @@
+import { readFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
+import { homedir } from "node:os";
 import type { Agent, AgentEvent, AgentEventType, AgentMessage, CreateAgentRequest } from "./types";
 
 let sdkAvailable = false;
@@ -14,6 +17,39 @@ try {
 
 function shortId(): string {
   return crypto.randomUUID().slice(0, 8);
+}
+
+function loadContextFiles(workingDir?: string): string {
+  const sections: string[] = [];
+  const home = homedir();
+
+  // Global identity + safety rules
+  const globalClaude = join(home, ".claude", "CLAUDE.md");
+  if (existsSync(globalClaude)) {
+    try {
+      sections.push("# Global Context (CLAUDE.md)\n" + readFileSync(globalClaude, "utf-8"));
+    } catch {}
+  }
+
+  // Business context / memory
+  const memoryPath = join(home, ".claude", "projects", "-mnt-c-Users-MPOWERIOSTATION1", "memory", "MEMORY.md");
+  if (existsSync(memoryPath)) {
+    try {
+      sections.push("# Business Context (MEMORY.md)\n" + readFileSync(memoryPath, "utf-8"));
+    } catch {}
+  }
+
+  // Project-specific CLAUDE.md
+  if (workingDir) {
+    const projectClaude = join(workingDir, "CLAUDE.md");
+    if (existsSync(projectClaude)) {
+      try {
+        sections.push("# Project Context (CLAUDE.md)\n" + readFileSync(projectClaude, "utf-8"));
+      } catch {}
+    }
+  }
+
+  return sections.length > 0 ? "\n\n---\n\n" + sections.join("\n\n---\n\n") : "";
 }
 
 export class AgentManager {
@@ -62,6 +98,7 @@ export class AgentManager {
       state: "idle",
       allowedTools: req.allowedTools || ["Read", "Glob", "Grep", "Bash"],
       systemPrompt: req.systemPrompt,
+      workingDir: req.workingDir,
       createdAt: new Date().toISOString(),
       messages: [],
       toolCalls: 0,
@@ -83,14 +120,20 @@ export class AgentManager {
       agent.state = "working";
       this.emitEvent("agent:working", agent);
 
+      const contextInjection = loadContextFiles(agent.workingDir);
+      const basePrompt = agent.systemPrompt || `You are ${agent.name}, an agent in the Butch orchestrator system.`;
+      const fullSystemPrompt = contextInjection ? basePrompt + contextInjection : basePrompt;
+
+      const cwd = agent.workingDir && existsSync(agent.workingDir) ? agent.workingDir : process.cwd();
+
       const q = queryFn({
         prompt: agent.prompt,
         options: {
           allowedTools: agent.allowedTools,
           permissionMode: "acceptEdits",
-          systemPrompt: agent.systemPrompt || `You are ${agent.name}, an agent in the Butch orchestrator system.`,
+          systemPrompt: fullSystemPrompt,
           model: agent.model,
-          cwd: process.cwd(),
+          cwd,
           maxTurns: 20,
         },
       });

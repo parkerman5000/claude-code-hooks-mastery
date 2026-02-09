@@ -14,6 +14,41 @@
   animation: gleam 4s linear infinite;
 }
 
+.optionsRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.select {
+  background: rgba(17,17,34,0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: #e2e2f0;
+  font-family: inherit;
+  font-size: 11px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.select:hover {
+  border-color: rgba(139,92,246,0.4);
+}
+
+.select:focus {
+  border-color: rgba(0,180,216,0.5);
+  box-shadow: 0 0 12px rgba(0,180,216,0.1);
+}
+
+.select option {
+  background: #111122;
+  color: #e2e2f0;
+}
+
 .inputRow {
   display: flex;
   gap: 8px;
